@@ -72,3 +72,14 @@ jobs:
           docker build . -t ${{ secrets.ACR_LOGIN }}/jonas1:latest
           docker push ${{ secrets.ACR_LOGIN }}/jonas1:latest
 
+      - name: Deploy to Azure Container Instances
+        uses: azure/aci-deploy@v1
+        with:
+          resource-group: NetworkWatcherRG
+          dns-name-label: my-app-container  # Example DNS name label
+          image-name: ${{ secrets.ACR_LOGIN }}/jonas1:latest
+          os-type: Linux
+          cpu: 1
+          memory: 1.5
+          ports: |
+            80:3000
